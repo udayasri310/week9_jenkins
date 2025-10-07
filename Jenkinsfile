@@ -1,29 +1,38 @@
 pipeline {
     agent any
     tools {
-        maven 'MAVEN_HOME'
+        maven 'MAVEN_HOME' // must match your Jenkins Maven installation name
     }
     stages {
         stage('git repo & clean') {
             steps {
-                //bat "rmdir /s /q mavenjava"
-                bat "git clone <provide your github link>"
-                bat "mvn clean -f mavenjava"
+                // Clone the repo
+                bat "git clone https://github.com/udayasri310/week9_jenkins.git"
+                // Change directory into the repo and run maven clean
+                dir('week9_jenkins') {
+                    bat "mvn clean"
+                }
             }
         }
         stage('install') {
             steps {
-                bat "mvn install -f my-maven-project"  // project name
+                dir('week9_jenkins') {
+                    bat "mvn install"
+                }
             }
         }
         stage('test') {
             steps {
-                bat "mvn test -f my-maven-project"
+                dir('week9_jenkins') {
+                    bat "mvn test"
+                }
             }
         }
         stage('package') {
             steps {
-                bat "mvn package -f my-maven-project"
+                dir('week9_jenkins') {
+                    bat "mvn package"
+                }
             }
         }
     }
